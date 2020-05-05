@@ -22,6 +22,10 @@ tap.test('starts/stops/destroys a docker container', async (assert: any) => {
   const ipAddress: string = await besuTestLedger.getContainerIpAddress();
   assert.ok(ipAddress);
   assert.ok(ipAddress.length);
+
+  const besuKeyPair = await besuTestLedger.getBesuKeyPair();
+  assert.ok(besuKeyPair);
+
   await besuTestLedger.stop();
   await besuTestLedger.destroy();
   assert.end();
