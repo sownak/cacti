@@ -1,27 +1,33 @@
-import Docker, { Container } from 'dockerode';
+import Docker, { Container, Exec } from 'dockerode';
 import Joi from 'joi';
 import { EventEmitter } from 'events';
 import { ITestLedger } from "../i-test-ledger";
+import { Streams } from '../common/streams';
 
 export interface IBesuTestLedgerConstructorOptions {
   containerImageVersion?: string;
   containerImageName?: string;
+  rpcApiHttpPort?: number;
 }
 
 export const DEFAULT_OPTIONS = Object.freeze({
   containerImageVersion: 'latest',
   containerImageName: 'petermetz/besu-all-in-one',
+  rpcApiHttpPort: 8545,
 });
 
 export const OPTIONS_JOI_SCHEMA: Joi.Schema = Joi.object().keys({
   containerImageVersion: Joi.string().min(5).required(),
   containerImageName: Joi.string().min(1).required(),
+  rpcApiHttpPort: Joi.number().integer().positive().min(1024).max(65535).required(),
 });
 
 export class BesuTestLedger implements ITestLedger {
 
   public readonly containerImageVersion: string;
   public readonly containerImageName: string;
+  public readonly rpcApiHttpPort: number;
+
   private container: Container | undefined;
 
   constructor(public readonly options: IBesuTestLedgerConstructorOptions = {}) {
@@ -30,12 +36,72 @@ export class BesuTestLedger implements ITestLedger {
     }
     this.containerImageVersion = options.containerImageVersion || DEFAULT_OPTIONS.containerImageVersion;
     this.containerImageName = options.containerImageName || DEFAULT_OPTIONS.containerImageName;
+    this.rpcApiHttpPort = options.rpcApiHttpPort || DEFAULT_OPTIONS.rpcApiHttpPort;
 
     this.validateConstructorOptions();
   }
 
   public getContainerImageName(): string {
     return `${this.containerImageName}:${this.containerImageVersion}`;
+  }
+
+  public async getRpcApiHttpHost(): Promise<string> {
+    const ipAddress: string = await this.getContainerIpAddress();
+    return `http://${ipAddress}:${this.rpcApiHttpPort}`;
+  }
+
+  public async getBesuKeyPair(): Promise<string[]> {
+
+    if (!this.container) {
+      throw new Error(`BesuTestLedger#getBesuKeyPair() container wasn't started by this instance yet.`);
+    }
+    var options = {
+      Cmd: ['bash', '-c', 'cat /config/orion/nodeKey.pub', ';', 'cat /config/orion/nodeKey.key'],
+      Env: ['VAR=someValue'],
+      AttachStdout: true,
+      AttachStderr: true
+    };
+
+    const exec: Exec = await this.container.exec(options);
+    const stream = await exec.start({});
+
+    return Streams.aggregate(stream);
+
+    // exec.inspect((err: any, data: any) => {
+    //   if (err) return;
+    //   console.log(data);
+    //   resolve(data);
+    // });
+
+    return new Promise((resolve, reject) => {
+      if (!this.container) {
+        return reject(new Error(`BesuTestLedger#getBesuKeyPair() container wasn't started by this instance yet.`));
+      }
+      // this.container.exec(options, (err: any, exec: any) => {
+      //   if (err) return;
+      //   exec.start((err: any, stream: any) => {
+      //     if (err) return;
+
+      //     if (!this.container) {
+      //       throw new Error(`BesuTestLedger#getBesuKeyPair() container wasn't started by this instance yet.`);
+      //     }
+      //     // this.container.modem.demuxStream(stream, process.stdout, process.stderr);
+      //     stream.on('data', (x: any) => {
+      //       console.log(x);
+      //     });
+
+      //     stream.on('end', (x: any) => {
+      //       console.log(x);
+      //     });
+
+      //     exec.inspect((err: any, data: any) => {
+      //       if (err) return;
+      //       console.log(data);
+      //       resolve(data);
+      //     });
+      //   });
+      // });
+    });
   }
 
   public async start(): Promise<Container> {
@@ -58,16 +124,16 @@ export class BesuTestLedger implements ITestLedger {
         [],
         {
           ExposedPorts: {
-            '8545/tcp': {},
-            '8546/tcp': {},
-            '8888/tcp': {},
-            '8080/tcp': {},
-            '9001/tcp': {},
-            '9545/tcp': {},
+            [`${this.rpcApiHttpPort}/tcp`]: {}, // besu RPC - HTTP
+            '8546/tcp': {}, // besu RPC - WebSocket
+            '8888/tcp': {}, // orion Client Port - HTTP
+            '8080/tcp': {}, // orion Node Port - HTTP
+            '9001/tcp': {}, // supervisord - HTTP
+            '9545/tcp': {}, // besu metrics
           },
           Hostconfig: {
             // PortBindings: {
-            //   '8545/tcp': [{ HostPort: '8545', }],
+            //   [`${this.rpcApiHttpPort}/tcp`]: [{ HostPort: '8545', }],
             //   '8546/tcp': [{ HostPort: '8546', }],
             //   '8080/tcp': [{ HostPort: '8080', }],
             //   '8888/tcp': [{ HostPort: '8888', }],
@@ -164,6 +230,7 @@ export class BesuTestLedger implements ITestLedger {
       {
         containerImageVersion: this.containerImageVersion,
         containerImageName: this.containerImageName,
+        rpcApiHttpPort: this.rpcApiHttpPort,
       },
       OPTIONS_JOI_SCHEMA
     );
