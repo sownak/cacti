@@ -33,6 +33,7 @@ For example web3 can be added as a dependency to the besu ledger connector plugi
 
 ```sh
 npx lerna add web3@latest --scope '*/*plugin-ledger-connector-besu' --exact # [--dev] [--peer]
+npx lerna add is-port-reachable --scope '*/*test-tooling' --exact # [--dev] [--peer]
 ```
 
 If you are adding a development dependency you can use the `--dev` option and `--peer` for a peer dependency.
