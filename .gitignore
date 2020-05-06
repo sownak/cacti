@@ -1,11 +1,11 @@
+.config.json
+.nyc_output/
+dist/
 .DS_Store
 node_modules/
 docs/main
 logs/
 jspm_packages/
-
-# TypeScript v1 declaration files
-typings/
 
 # Optional npm cache directory
 .npm
@@ -26,10 +26,13 @@ typings/
 .next
 
 # vscode files
-.vscode/
+.vscode/*
+!.vscode/template.launch.json
 
 # Introperability App specifics
 examples/simple-asset-transfer/fabric/**/hfc-key-store/
 
 bin/
 .tmp/
+lerna-debug.log
+bif-openapi-spec.json
