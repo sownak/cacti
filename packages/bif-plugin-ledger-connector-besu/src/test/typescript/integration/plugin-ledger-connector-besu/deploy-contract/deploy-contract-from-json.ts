@@ -10,12 +10,27 @@ tap.test('deploys contract via .json file', async (assert: any) => {
   const besuTestLedger = new BesuTestLedger();
   await besuTestLedger.start();
 
+  assert.tearDown(async () => {
+    await besuTestLedger.stop();
+    await besuTestLedger.destroy();
+  });
+
   const rpcApiHttpHost = await besuTestLedger.getRpcApiHttpHost();
+
+  const orionKeyPair = await besuTestLedger.getOrionKeyPair();
+  const besuKeyPair = await besuTestLedger.getBesuKeyPair();
 
   const factory = new PluginFactoryLedgerConnector();
   const connector: PluginLedgerConnectorBesu = await factory.create({rpcApiHttpHost });
 
-  const out = await connector.deployContractInternal(HelloWorldContractJson);
+  const options = {
+    publicKey: orionKeyPair.publicKey,
+    privateKey: besuKeyPair.privateKey,
+    contractJsonArtifact: HelloWorldContractJson,
+  };
+
+  const out = await connector.deployContractInternal(options);
   assert.ok(out);
+
   assert.end();
 });

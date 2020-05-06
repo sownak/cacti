@@ -2,9 +2,9 @@ import { Stream } from 'stream';
 
 export class Streams {
 
-    public static aggregate<T>(stream: Stream): Promise<Array<T>> {
+    public static aggregate<T>(stream: Stream): Promise<T[]> {
 
-        const data: Array<T> = [];
+        const data: T[] = [];
 
         return new Promise((resolve, reject) => {
             stream.on('data', (buffer: Buffer) => {
