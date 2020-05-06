@@ -67,3 +67,6 @@ This distribution is published under the Apache License Version 2.0 found in the
 
 [Hart Montgomery](mailto:hmontgomery@us.fujitsu.com) ([hartm](https://github.com/hartm)) - TSC member
 
+Steps
+1. npm install
+2. npm run configure
