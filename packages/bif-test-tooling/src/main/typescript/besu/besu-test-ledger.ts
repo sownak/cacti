@@ -1,8 +1,11 @@
-import Docker, { Container, Exec } from 'dockerode';
+import Docker, { Container } from 'dockerode';
+import isPortReachable from 'is-port-reachable';
 import Joi from 'joi';
+import tar from 'tar-stream';
 import { EventEmitter } from 'events';
 import { ITestLedger } from "../i-test-ledger";
 import { Streams } from '../common/streams';
+import { IKeyPair } from '../i-key-pair';
 
 export interface IBesuTestLedgerConstructorOptions {
   containerImageVersion?: string;
@@ -41,6 +44,14 @@ export class BesuTestLedger implements ITestLedger {
     this.validateConstructorOptions();
   }
 
+  public getContainer(): Container {
+    if (!this.container) {
+      throw new Error(`BesuTestLedger#getBesuKeyPair() container wasn't started by this instance yet.`);
+    } else {
+      return this.container;
+    }
+  }
+
   public getContainerImageName(): string {
     return `${this.containerImageName}:${this.containerImageVersion}`;
   }
@@ -50,58 +61,40 @@ export class BesuTestLedger implements ITestLedger {
     return `http://${ipAddress}:${this.rpcApiHttpPort}`;
   }
 
-  public async getBesuKeyPair(): Promise<string[]> {
-
-    if (!this.container) {
-      throw new Error(`BesuTestLedger#getBesuKeyPair() container wasn't started by this instance yet.`);
-    }
-    var options = {
-      Cmd: ['bash', '-c', 'cat /config/orion/nodeKey.pub', ';', 'cat /config/orion/nodeKey.key'],
-      Env: ['VAR=someValue'],
-      AttachStdout: true,
-      AttachStderr: true
-    };
-
-    const exec: Exec = await this.container.exec(options);
-    const stream = await exec.start({});
-
-    return Streams.aggregate(stream);
-
-    // exec.inspect((err: any, data: any) => {
-    //   if (err) return;
-    //   console.log(data);
-    //   resolve(data);
-    // });
+  public async getFileContents(filePath: string): Promise<string> {
+    const response: any = await this.getContainer().getArchive({ path: filePath });
+    const extract: tar.Extract = tar.extract({ autoDestroy: true });
 
     return new Promise((resolve, reject) => {
-      if (!this.container) {
-        return reject(new Error(`BesuTestLedger#getBesuKeyPair() container wasn't started by this instance yet.`));
-      }
-      // this.container.exec(options, (err: any, exec: any) => {
-      //   if (err) return;
-      //   exec.start((err: any, stream: any) => {
-      //     if (err) return;
+      let fileContents: string = '';
+      extract.on('entry', async (header: any, stream, next) => {
+        stream.on('error', (err: Error) => {
+          reject(err);
+        });
+        const chunks: string[] = await Streams.aggregate<string>(stream);
+        fileContents += chunks.join('');
+        stream.resume();
+        next();
+      })
 
-      //     if (!this.container) {
-      //       throw new Error(`BesuTestLedger#getBesuKeyPair() container wasn't started by this instance yet.`);
-      //     }
-      //     // this.container.modem.demuxStream(stream, process.stdout, process.stderr);
-      //     stream.on('data', (x: any) => {
-      //       console.log(x);
-      //     });
+      extract.on('finish', () => {
+        resolve(fileContents);
+      });
 
-      //     stream.on('end', (x: any) => {
-      //       console.log(x);
-      //     });
-
-      //     exec.inspect((err: any, data: any) => {
-      //       if (err) return;
-      //       console.log(data);
-      //       resolve(data);
-      //     });
-      //   });
-      // });
+      response.pipe(extract);
     });
+  }
+
+  public async getBesuKeyPair(): Promise<IKeyPair> {
+    const publicKey = await this.getFileContents('/opt/besu/keys/key.pub');
+    const privateKey = await this.getFileContents('/opt/besu/keys/key');
+    return { publicKey, privateKey };
+  }
+
+  public async getOrionKeyPair(): Promise<IKeyPair> {
+    const publicKey = await this.getFileContents('/config/orion/nodeKey.pub');
+    const privateKey = await this.getFileContents('/config/orion/nodeKey.key');
+    return { publicKey, privateKey };
   }
 
   public async start(): Promise<Container> {
@@ -132,14 +125,14 @@ export class BesuTestLedger implements ITestLedger {
             '9545/tcp': {}, // besu metrics
           },
           Hostconfig: {
-            // PortBindings: {
-            //   [`${this.rpcApiHttpPort}/tcp`]: [{ HostPort: '8545', }],
-            //   '8546/tcp': [{ HostPort: '8546', }],
-            //   '8080/tcp': [{ HostPort: '8080', }],
-            //   '8888/tcp': [{ HostPort: '8888', }],
-            //   '9001/tcp': [{ HostPort: '9001', }],
-            //   '9545/tcp': [{ HostPort: '9545', }],
-            // },
+            PortBindings: {
+              // [`${this.rpcApiHttpPort}/tcp`]: [{ HostPort: '8545', }],
+              // '8546/tcp': [{ HostPort: '8546', }],
+              // '8080/tcp': [{ HostPort: '8080', }],
+              // '8888/tcp': [{ HostPort: '8888', }],
+              // '9001/tcp': [{ HostPort: '9001', }],
+              // '9545/tcp': [{ HostPort: '9545', }],
+            },
           },
         },
         {
@@ -151,9 +144,21 @@ export class BesuTestLedger implements ITestLedger {
         }
       );
 
-      eventEmitter.once('start', (container: Container) => {
+      eventEmitter.once('start', async (container: Container) => {
         this.container = container;
-        resolve(container);
+        // once the container has started, we wait until the the besu RPC API starts listening on the designated port
+        // which we determine by continously trying to establish a socket until it actually works
+        const host: string = await this.getContainerIpAddress();
+        try {
+          let reachable: boolean = false;
+          do {
+            reachable = await isPortReachable(this.rpcApiHttpPort, { host });
+            await new Promise((resolve2) => setTimeout(resolve2, 100));
+          } while (!reachable);
+          resolve(container);
+        } catch (ex) {
+          reject(ex);
+        }
       });
     });
   }

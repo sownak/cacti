@@ -25,17 +25,24 @@ export class PluginLedgerConnectorBesu implements IPluginLedgerConnector {
   }
 
   public async sendTransaction(options: ITransactionOptions): Promise<any> {
-    const txHash = await this.web3Eea.eea.sendRawTransaction(options);
+    return this.web3Eea.eea.sendRawTransaction(options);
   }
 
-  public async deployContractInternal(contractJsonObject: any): Promise<void> {
+  public instantiateContract(contractJsonArtifact: any, address?: string): any {
+    const contract = new this.web3.eth.Contract(contractJsonArtifact.abi, address);
+    return contract;
+  }
 
-    const privateKey = ''; // besu node's private key
-    const publicKey = ''; // orion public key of the sender
-    const allOrionPublicKeys: string[] = []; // all orion public keys of receipients
+  public async deployContractInternal(options: any): Promise<void> {
+
+    // const contract = this.instantiateContract(contractJsonArtifact);
+
+    const privateKey = options.privateKey.toLowerCase().startsWith('0x') ? options.privateKey.substring(2): options.privateKey; // besu node's private key
+    const publicKey = options.publicKey; // orion public key of the sender
+    const allOrionPublicKeys: string[] = [options.publicKey]; // all orion public keys of receipients
 
     const contractOptions = {
-      data: contractJsonObject.options.data,
+      data: options.contractJsonArtifact.bytecode,
       // privateFrom : Orion public key of the sender.
       privateFrom: publicKey,
       // privateFor : Orion public keys of recipients or privacyGroupId: Privacy group to receive the transaction
@@ -45,7 +52,7 @@ export class PluginLedgerConnectorBesu implements IPluginLedgerConnector {
     };
 
     const txHash = await this.web3Eea.eea.sendRawTransaction(contractOptions);
-
+    return txHash;
   }
 
   public deployContract(): Promise<void> {
