@@ -1,4 +1,5 @@
 import path from 'path';
+import { Server } from 'http';
 import { Config } from 'convict';
 import express, { Express, Request, Response, NextFunction, RequestHandler, Application } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';
@@ -18,6 +19,8 @@ export interface IApiServerConstructorOptions {
 export class ApiServer {
 
   private readonly log: Logger;
+  private httpServerApi: Server | null = null;
+  private httpServerFile: Server | null = null;
 
   constructor(public readonly options: IApiServerConstructorOptions) {
     if (!options) {
@@ -30,8 +33,43 @@ export class ApiServer {
   }
 
   async start(): Promise<void> {
-    await this.startCockpitFileServer();
-    await this.startApiServer();
+    try {
+      await this.startCockpitFileServer();
+      await this.startApiServer();
+    } catch (ex) {
+      this.log.error(`Failed to start ApiServer: ${ex.stack}`);
+      this.log.error(`Attempting shutdown...`);
+      await this.shutdown();
+    }
+  }
+
+  public shutdown(): Promise<any> {
+
+    const apiServerShutdown = new Promise<void>((resolve, reject) => {
+      if (this.httpServerApi) {
+        this.httpServerApi.close((err: any) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      }
+    });
+
+    const fileServerShutdown = new Promise<void>((resolve, reject) => {
+      if (this.httpServerFile) {
+        this.httpServerFile.close((err: any) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      }
+    });
+
+    return Promise.all([apiServerShutdown, fileServerShutdown]);
   }
 
   async startCockpitFileServer(): Promise<void> {
@@ -53,12 +91,12 @@ export class ApiServer {
     const cockpitHost: string = this.options.config.get('cockpitHost');
 
     await new Promise<any>((resolve, reject) => {
-      const httpServer = app.listen(cockpitPort, cockpitHost, () => {
+      this.httpServerApi = app.listen(cockpitPort, cockpitHost, () => {
         // tslint:disable-next-line: no-console
         console.log(`BIF Cockpit UI reachable on port ${cockpitPort}`);
         resolve({ cockpitPort });
       });
-      httpServer.on('error', (err) => reject(err));
+      this.httpServerApi.on('error', (err: any) => reject(err));
     });
   }
 
@@ -93,11 +131,16 @@ export class ApiServer {
 
     const apiPort: number = this.options.config.get('apiPort');
     const apiHost: string = this.options.config.get('apiHost');
+    this.log.info(`Binding Cactus API to port ${apiPort}...`);
     await new Promise<any>((resolve, reject) => {
       const httpServer = app.listen(apiPort, apiHost, () => {
-        // tslint:disable-next-line: no-console
-        console.log(`BIF API reachable on port ${apiPort}`);
-        resolve({ port: apiPort });
+        const address: any = httpServer.address();
+        this.log.info(`Successfully bound API to port ${apiPort}`, { address });
+        if (address && address.port) {
+          resolve({ port: address.port });
+        } else {
+          resolve({ port: apiPort });
+        }
       });
       httpServer.on('error', (err) => reject(err));
     });
