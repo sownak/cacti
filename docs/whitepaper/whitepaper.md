@@ -1,6 +1,6 @@
 <img src="./logo_hl_new.png" width="700" >
 
-# Blockchain Integration Framework<br>Whitepaper <!-- omit in toc -->
+# Hyperledger Cactus<br>Whitepaper <!-- omit in toc -->
 
 ## Version 0.1 (Early Draft) <!-- omit in toc -->
 
@@ -65,50 +65,34 @@ Photo by Pontus Wellgraf on Unsplash
 - [4. Architecture](#4-architecture)
   - [4.1 Interworking patterns](#41-interworking-patterns)
     - [4.1.1 Interworking patterns list](#411-interworking-patterns-list)
-    - [4.1.2 Value transfer](#412-value-transfer)
-      - [4.1.2.1 Desription of the pattern](#4121-desription-of-the-pattern)
-      - [4.1.2.2 Sequence diagram](#4122-sequence-diagram)
-    - [4.1.3 Value-data transfer](#413-value-data-transfer)
-      - [4.1.3.1 Desription of the pattern](#4131-desription-of-the-pattern)
-      - [4.1.3.2 Sequence diagram](#4132-sequence-diagram)
-    - [4.1.4 Data-value transfer](#414-data-value-transfer)
-      - [4.1.4.1 Desription of the pattern](#4141-desription-of-the-pattern)
-      - [4.1.4.2 Sequence diagram](#4142-sequence-diagram)
-    - [4.1.5 Data transfer](#415-data-transfer)
-      - [4.1.5.1 Desription of the pattern](#4151-desription-of-the-pattern)
-      - [4.1.5.2 Sequence diagram](#4152-sequence-diagram)
-    - [4.1.6 Data merge](#416-data-merge)
-      - [4.1.6.1 Desription of the pattern](#4161-desription-of-the-pattern)
-      - [4.1.6.2 Sequence diagram](#4162-sequence-diagram)
-  - [4.2 Technical Architecture](#42-technical-architecture)
-    - [4.2.1 Monorepo Packages](#421-monorepo-packages)
-      - [4.2.1.1 core](#4211-core)
-        - [4.2.1.1.1 Runtime Configuration Parsing and Validation](#42111-runtime-configuration-parsing-and-validation)
-        - [4.2.1.1.2 Configuration Schema - Validator](#42112-configuration-schema---validator)
-        - [4.2.1.1.3 Configuration Schema - API Server](#42113-configuration-schema---api-server)
-        - [4.2.1.1.4 Plugin Loading/Validation](#42114-plugin-loadingvalidation)
-      - [4.2.1.2 cmd-api-server](#4212-cmd-api-server)
-      - [4.2.1.3 cmd-validator](#4213-cmd-validator)
-      - [4.2.1.4 sdk-javascript](#4214-sdk-javascript)
+    - [4.2 Interworking architecture](#42-interworking-architecture)
+  - [4.3 Technical Architecture](#43-technical-architecture)
+    - [4.3.1 Monorepo Packages](#431-monorepo-packages)
+      - [4.2.1.1 cmd-api-server](#4211-cmd-api-server)
+        - [4.3.1.1.1 Runtime Configuration Parsing and Validation](#43111-runtime-configuration-parsing-and-validation)
+        - [4.2.1.1.2 Configuration Schema - API Server](#42112-configuration-schema---api-server)
+        - [4.3.1.1.4 Plugin Loading/Validation](#43114-plugin-loadingvalidation)
+      - [4.2.1.2 core-api](#4212-core-api)
+      - [4.2.1.4 sdk](#4214-sdk)
       - [4.2.1.5 keychain](#4215-keychain)
-      - [4.2.1.7 tracing](#4217-tracing)
-      - [4.2.1.8 audit](#4218-audit)
-      - [4.2.1.9 document-storage](#4219-document-storage)
-      - [4.2.1.10 relational-storage](#42110-relational-storage)
-      - [4.2.1.11 immutable-storage](#42111-immutable-storage)
-    - [4.2.2 Deployment Diagram](#422-deployment-diagram)
-    - [4.2.3 Component Diagram](#423-component-diagram)
-    - [4.2.4 Class Diagram](#424-class-diagram)
-    - [4.2.5 Sequence Diagram - Transactions](#425-sequence-diagram---transactions)
-  - [4.3 Transaction Protocol Specification](#43-transaction-protocol-specification)
-    - [4.3.1 Handshake Mechanism](#431-handshake-mechanism)
-    - [4.3.2 Transaction Protocol Negotiation](#432-transaction-protocol-negotiation)
-  - [4.4 Plugin Architecture](#44-plugin-architecture)
-    - [4.4.1 Ledger Connector Plugins](#441-ledger-connector-plugins)
-    - [4.4.2 Identity Federation Plugins](#442-identity-federation-plugins)
-      - [4.4.1.1 X.509 Certificate Plugin](#4411-x509-certificate-plugin)
-    - [4.4.3 Key/Value Storage Plugins](#443-keyvalue-storage-plugins)
-    - [4.4.4 Serverside Keychain Plugins](#444-serverside-keychain-plugins)
+      - [4.3.1.7 tracing](#4317-tracing)
+      - [4.3.1.8 audit](#4318-audit)
+      - [4.3.1.9 document-storage](#4319-document-storage)
+      - [4.3.1.10 relational-storage](#43110-relational-storage)
+      - [4.3.1.11 immutable-storage](#43111-immutable-storage)
+    - [4.3.2 Deployment Diagram](#432-deployment-diagram)
+    - [4.3.3 Component Diagram](#433-component-diagram)
+    - [4.3.4 Class Diagram](#434-class-diagram)
+    - [4.3.5 Sequence Diagram - Transactions](#435-sequence-diagram---transactions)
+  - [4.4 Transaction Protocol Specification](#44-transaction-protocol-specification)
+    - [4.4.1 Handshake Mechanism](#441-handshake-mechanism)
+    - [4.4.2 Transaction Protocol Negotiation](#442-transaction-protocol-negotiation)
+  - [4.5 Plugin Architecture](#45-plugin-architecture)
+    - [4.5.1 Ledger Connector Plugins](#451-ledger-connector-plugins)
+    - [4.5.2 Identity Federation Plugins](#452-identity-federation-plugins)
+      - [4.5.1.1 X.509 Certificate Plugin](#4511-x509-certificate-plugin)
+    - [4.5.3 Key/Value Storage Plugins](#453-keyvalue-storage-plugins)
+    - [4.5.4 Serverside Keychain Plugins](#454-serverside-keychain-plugins)
 - [5. Identities, Authentication, Authorization](#5-identities-authentication-authorization)
   - [5.1 Transaction Signing Modes, Key Ownership](#51-transaction-signing-modes-key-ownership)
     - [5.1.1 Client-side Transaction Signing](#511-client-side-transaction-signing)
@@ -137,7 +121,7 @@ between a large variety of ledgers specific to certain mainstream or exotic use 
 | Use Case Attribute Name    | Use Case Attribute Value                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Use Case Title             | Ethereum to Quorum Escrowed Asset Transfer                                                                                                                                                                                                                                                                                                                                                                                                                |
-| Use Case                   | 1. `User A` owns some assets on a Ethereum ledger<br>2. `User A` asks `Exchanger` to exchange specified amount of assets on Ethereum ledger, and receives exchanged asset at the Quorum ledger. 
+| Use Case                   | 1. `User A` owns some assets on a Ethereum ledger<br>2. `User A` asks `Exchanger` to exchange specified amount of assets on Ethereum ledger, and receives exchanged asset at the Quorum ledger.
 | Interworking patterns      | Value transfer                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | Type of Social Interaction | Escrowed Asset Transfer                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | Narrative                  | A person (`User A`) has multiple accounts on different ledgers (Ethereum, Quorum) and he wishes to send some assets from Ethereum ledger to a Quorum ledger with considering conversion rate. The sent asset on Ethereum will be received by Exchanger only when he successfully received converted asset on Quorum ledger. |
@@ -146,7 +130,7 @@ between a large variety of ledgers specific to certain mainstream or exotic use 
 | Success Scenario           | Transfer succeeds without issues. Asset is available on both Ethereum and Quorum ledgers.                                                                                                                                                                                                                                                                                                                                                        |
 | Success Criteria           | Transfer asset on Quorum was successed.                                                                                                                                                                                                                                                                                                                                                |
 | Failure Criteria           | Transfer asset on Quorum was failed.                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Prerequisites              | 1. Ledgers are provisioned<br>2. `User A` and `Exchanger` identities established on both ledgers<br>3. `Exchanger` authorized business logic plugin to operate the account on Quorum ledger.<br>4.`User A` has access to BIF deployment                                                                                                                                                                                                                                                                                                               |
+| Prerequisites              | 1. Ledgers are provisioned<br>2. `User A` and `Exchanger` identities established on both ledgers<br>3. `Exchanger` authorized business logic plugin to operate the account on Quorum ledger.<br>4.`User A` has access to Hyperledger Cactus deployment                                                                                                                                                                                                                                                                                                               |
 | Comments                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 <div style="page-break-after: always; visibility: hidden"><!-- \pagebreak --></div>
@@ -162,7 +146,7 @@ between a large variety of ledgers specific to certain mainstream or exotic use 
 | Use Case Title              | Escrowed Sale of Data for Coins |
 | Use Case                    | 1. `User A` initiates (proposes) an escrowed transaction with `User B`<br>2. `User A` places funds, `User B` places the data to a digital escrow service.<br>3. They both observe each other's input to the escrow service and decide to proceed.<br>4. Escrow service releases the funds and the data to the parties in the exchange. |
 | Type of Social Interaction  | Peer to Peer Exchange |
-| Narrative                   | Data in this context is any series of bits stored on a computer:<br> * Machine learning model<br> * ad-tech database<br> * digital/digitized art<br> * proprietary source code or binaries of software<br> * etc.<br><br>`User A` and B trade the data and the funds through a BIF transaction in an atomic swap with escrow securing both parties from fraud or unintended failures.<br>Through the transaction protocol's handshake mechanism, A and B can agree (in advance) upon<br><br>* The delivery addresses (which ledger, which wallet)<br>* the provider of escrow that they both trust<br>* the price and currency<br><br>Establishing trust (e.g. Is that art original or is that machine learning model has the advertised accuracy) can be facilitated through the participating DLTs if they support it. Note that `User A` has no way of knowing the quality of the dataset, they entirely rely on `User B`'s description of its quality (there are solutions to this problem, but it's not within the scope of our use case to discuss these). |
+| Narrative                   | Data in this context is any series of bits stored on a computer:<br> * Machine learning model<br> * ad-tech database<br> * digital/digitized art<br> * proprietary source code or binaries of software<br> * etc.<br><br>`User A` and B trade the data and the funds through a Hyperledger Cactus transaction in an atomic swap with escrow securing both parties from fraud or unintended failures.<br>Through the transaction protocol's handshake mechanism, A and B can agree (in advance) upon<br><br>* The delivery addresses (which ledger, which wallet)<br>* the provider of escrow that they both trust<br>* the price and currency<br><br>Establishing trust (e.g. Is that art original or is that machine learning model has the advertised accuracy) can be facilitated through the participating DLTs if they support it. Note that `User A` has no way of knowing the quality of the dataset, they entirely rely on `User B`'s description of its quality (there are solutions to this problem, but it's not within the scope of our use case to discuss these). |
 | Actors                      | 1. `User A`: A person or business organization with the intent to purchase data.<br>2. `User B`: A person or business entity with data to sell. |
 | Goals of Actors             | `User A` wants to have access to data for an arbitrary reason such as having a business process that can enhanced by it.<br> `User B`: Is looking to generate income/profits from data they have obtained/created/etc. |
 | Success Scenario            | Both parties have signaled to proceed with escrow and the swap happened as specified in advance. |
@@ -187,18 +171,18 @@ Enabling the trading of fiat and virtual currencies in any permutation of possib
 | W3C Use Case Attribute Name | W3C Use Case Attribute Value |
 |-----------------------------|------------------------------------------------|
 | Use Case Title              | Stable Coin Pegged to Other Currency |
-| Use Case                    | 1. `User A` creates their own ledger<br>2. `User A` deploys BIF in an environment set up by them.<br>3. `User A` implements necessary plugins for BIF to interface with their ledger for transactions, token minting and burning.|
+| Use Case                    | 1. `User A` creates their own ledger<br>2. `User A` deploys Hyperledger Cactus in an environment set up by them.<br>3. `User A` implements necessary plugins for Hyperledger Cactus to interface with their ledger for transactions, token minting and burning.|
 | Type of Social Interaction  | Software Implementation Project |
 | Narrative                   | Someone launches a highly scalable ledger with their own coin called ExampleCoin that can consistently sustain throughput levels of a million transactions per second reliably, but they struggle with adoption because nobody wants to buy into their coin fearing that it will lose its value. They choose to put in place a two-way peg with Bitcoin which guarantees to holders of their coin that it can always be redeemed for a fixed number of Bitcoins/USDs. |
 | Actors                      | `User A`: Owner and/or operator of a ledger and currency that they wish to stabilize (peg) to other currencies |
-| Goals of Actors             | 1. Achieve credibility for their currency by backing funds.<br>2. Implement necessary software with minimal boilerplate code (most of which should be provided by BIF) |
-| Success Scenario            | `User A` stood up a BIF deployment with their self-authored plugins and it is possible for end user application development to start by leveraging the BIF REST APIs which now expose the functionalities provided by the plugin authored by ``User A`` |
-| Success Criteria            | Success scenario was achieved without significant extra development effort apart from creating the BIF plugins. |
+| Goals of Actors             | 1. Achieve credibility for their currency by backing funds.<br>2. Implement necessary software with minimal boilerplate code (most of which should be provided by Hyperldger Cactus) |
+| Success Scenario            | `User A` stood up a Hyperledger Cactus deployment with their self-authored plugins and it is possible for end user application development to start by leveraging the Hyperledger Cactus REST APIs which now expose the functionalities provided by the plugin authored by ``User A`` |
+| Success Criteria            | Success scenario was achieved without significant extra development effort apart from creating the Hyperledger Cactus plugins. |
 | Failure Criteria            | Implementation complexity was high enough that it would've been easier to write something from scratch without the framework |
 | Prerequisites               | * Operational ledger and currency<br>*Technical knowledge for plugin implementation (software engineering) |
 | Comments                    | |
 
-> Sequence diagram omitted as use case does not pertain to end users of BIF itself.
+> Sequence diagram omitted as use case does not pertain to end users of Hyperledger Cactus itself.
 
 ### 2.4.1 With Permissionless Ledgers (BTC)
 
@@ -223,7 +207,7 @@ gets replaced by a traditional bank account holding USD.
 | Use Case Title              | Healthcare Data Sharing with Access Control Lists |
 | Use Case                    | 1. `User A` (patient) engages in business with `User B` (healthcare provider)<br>2. `User B` requests permission to have read access to digitally stored medical history of `User A` and write access to log new entries in said medical history.<br>3.`User A` receives a prompt to grant access and allows it.<br>4. `User B` is granted permission through ledger specific access control/privacy features to the data of `User A`. |
 | Type of Social Interaction  | Peer to Peer Data Sharing |
-| Narrative                   | Let's say that two healthcare providers have both implemented their own blockchain based patient data management systems and are looking to integrate with each other to provide patients with a seamless experience when being directed from one to another for certain treatments. The user is in control over their data on both platforms separately and with a BIF backed integration they could also define fine grained access control lists consenting to the two healthcare providers to access each other's data that they collected about the patient. |
+| Narrative                   | Let's say that two healthcare providers have both implemented their own blockchain based patient data management systems and are looking to integrate with each other to provide patients with a seamless experience when being directed from one to another for certain treatments. The user is in control over their data on both platforms separately and with a Hyperledger Cactus backed integration they could also define fine grained access control lists consenting to the two healthcare providers to access each other's data that they collected about the patient. |
 | Actors                      | * `User A`: Patient engaging in business with a healthcare provider<br>* `User B`: Healthcare provider offering services to `User A`. Some of said services depend on having access to prior medical history of `User A`. |
 | Goals of Actors             | * `User A`: Wants to have fine grained access control in place when it comes to sharing their data to ensure that it does not end up in the hands of hackers or on a grey data market place.<br>`User B` |
 | Success Scenario            | `User B` (healthcare provider) has access to exactly as much information as they need to and nothing more. |
@@ -242,13 +226,13 @@ gets replaced by a traditional bank account holding USD.
 | Use Case Title              | Food Traceability Integration |
 | Use Case                    | 1. `Consumer` is evaluating a food item in a physical retail store.<br> 2. `Consumer` queries the designated end user application designed to provide food traces. 3. `Consumer` makes purchasing decision based on food trace.|
 | Type of Social Interaction  | Software Implementation Project |
-| Narrative                   | Both `Organization A` and `Organization B` have separate products/services for solving the problem of verifying the source of food products sold by retailers.<br>A retailer has purchased the food traceability solution from `Organization A` while a food manufacturer (whom the retailer is a customer of) has purchased their food traceability solution from `Organization B`.<br>The retailer wants to provide end to end food traceability to their customers, but this is not possible since the chain of traceability breaks down at the manufacturer who uses a different service or solution. `BIF` is used as an architectural component to build an integration for the retailer which ensures that consumers have access to food tracing data regardless of the originating system for it being the product/service of `Organization A` or `Organization B`. |
+| Narrative                   | Both `Organization A` and `Organization B` have separate products/services for solving the problem of verifying the source of food products sold by retailers.<br>A retailer has purchased the food traceability solution from `Organization A` while a food manufacturer (whom the retailer is a customer of) has purchased their food traceability solution from `Organization B`.<br>The retailer wants to provide end to end food traceability to their customers, but this is not possible since the chain of traceability breaks down at the manufacturer who uses a different service or solution. `Cactus` is used as an architectural component to build an integration for the retailer which ensures that consumers have access to food tracing data regardless of the originating system for it being the product/service of `Organization A` or `Organization B`. |
 | Actors                      | `Organization A`, `Organization B` entities whose business has to do with food somewhere along the global chain from growing/manufacturing to the consumer retail shelves.<br> `Consumer`: Private citizen who makes food purchases in a consumer retail goods store and wishes to trace the food end to end before purchasing decisions are finalized. |
 | Goals of Actors             | `Organization A`, `Organization B`: Provide `Consumer` with a way to trace food items back to the source.<br>`Consumer`: Consume food that's been ethically sourced, treated and transported. |
 | Success Scenario            | `Consumer` satisfaction increases on account of the ability to verify food origins. |
 | Success Criteria            | `Consumer` is able to verify food items' origins before making a purchasing decision. |
 | Failure Criteria            | `Consumer` is unable to verify food items' origins partially or completely. |
-| Prerequisites               | 1. `Organization A` and `Organization B` are both signed up for blockchain enabled software services that provide end to end food traceability solutions on their own but require all participants in the chain to use a single solution in order to work.<br>2. Both solutions of `Organization A` and `B` have terms and conditions such that it is possible technically and legally to integrate the software with each other and `BIF`. |
+| Prerequisites               | 1. `Organization A` and `Organization B` are both signed up for blockchain enabled software services that provide end to end food traceability solutions on their own but require all participants in the chain to use a single solution in order to work.<br>2. Both solutions of `Organization A` and `B` have terms and conditions such that it is possible technically and legally to integrate the software with each other and `Cactus`. |
 | Comments                    | |
 
 <img width="700" src="https://www.plantuml.com/plantuml/png/0/rPRBRjim44Nt_8g1ksaNIM4jWzY8dS1eW0PDcqSt0G9A6jc4QL8bgQJkrtT8oefVifnTkxDy3uSpbyF7XNNSk6eXuGv_LQWoX2l1fuOlu0GcMkTmRtY6F1LIk2LSAuSaEg4LOtOkLCazEZ96lqwqSdTkAH64ur9aZ3dXwElBiaGZCP-YWR7KsJoRSQ7MGy64Wk2hDlCdzVuqUEQqWGUBvda4t0A7y_DCArijq0o7w_BOood9saov4lnFd7q4P49HRBANdirss773ibJ_Xb5PKgLH-l1p9XmoLCwds9iOyWDLtlE1YlgZKSSycw_4DFucBGSA6YEFhoVR4KUtru7dfMZ-UoIdSqvPVxIVWlYo6QRtDHXlUwjW1FEKMmokFaVrkUz7vltzOXB4v2qkhvmcfyGBTmX-1GO3-86PDZbSKG0O36XkE1asLPzvd_pmi9A1YJo3Xl5yRSGX75QGvyc8monun9Dvlmiqw2gZTjHw54Ri2AWJwGHOzezvb_n7tb4htg2PubidIgrBkDLI2ZNzV6_4b7ewpBPjnlSApH9YqqEVRNNF7dKzcpeHEWRMa0wWAuU4RQt27lNW50dh13PpQ9heKY_AojKkNecYs5FMNgsbmsw4jUH_7EDqgyl7uFNqg__WeQHZQxr_TfJt5faSA38vj95QyjvPo6FmpMAIrZBVb712-tOFso1Sc77Tlr7N2sN3Tk2RXqjigK25VPDtd2u7-BPkRe7txAvMigwubhQtlwqffMan9HQk_XuvS3DXeTH2-Py8_dxpDrRKGvocMJWbde2TwKgkfaqHw3L2zvoawpO05CHWeGskIb1BYaUtOE6b1MHSqQXQf8UC4PHlkWotEIsmJfr_-X1Q8ncre4HAk_2vkB1a9XPrMYFUK5yPEyw8Bg9BZmt2pu3UK5ARiwb1LCCRFaTuHIb1A2f_WVcJsW3Aoj2pBdHpZfcmz23Q8lox8fmzeLGTM_AKCNP15T83z2y0">
@@ -264,14 +248,14 @@ gets replaced by a traditional bank account holding USD.
 | W3C Use Case Attribute Name | W3C Use Case Attribute Value |
 |-----------------------------|------------------------------|
 | Use Case Title              | Wallet Authentication/Authorization |
-| Use Case                    | 1. `User A` has separate identities on different permissioned and permissionless ledgers in the form of private/public key pairs (Public Key Infrastructure).<br>2. `User A` wishes to access/manage these identities through a single API or user interface and opts to on-board the identities to a `BIF` deployment.<br>3. `User A` performs the on-boarding of identities and is now able to interact with wallets attached to said identities through `BIF` or end user applications that leverage `BIF` under the hood (e.g. either by directly issuing API requests or using an application that does so.|
+| Use Case                    | 1. `User A` has separate identities on different permissioned and permissionless ledgers in the form of private/public key pairs (Public Key Infrastructure).<br>2. `User A` wishes to access/manage these identities through a single API or user interface and opts to on-board the identities to a `Cactus` deployment.<br>3. `User A` performs the on-boarding of identities and is now able to interact with wallets attached to said identities through `Cactus` or end user applications that leverage `Cactus` under the hood (e.g. either by directly issuing API requests or using an application that does so.|
 | Type of Social Interaction  | Identity Management |
 | Narrative                   | End user facing applications can provide a seamless experience connecting multiple permissioned (or permissionless) networks for an end user who has a set of different identity proofs for wallets on different ledgers. |
-| Actors                      | `User A`: The person or entity whose identities get consolidated within a single `BIF` deployment |
-| Goals of Actors             | `User A`: Convenient way to manage an array of distinct identities with the trade-off that a `BIF` deployment must be trusted with the private keys of the identities involved (an educated decision on the user's part). |
+| Actors                      | `User A`: The person or entity whose identities get consolidated within a single `Cactus` deployment |
+| Goals of Actors             | `User A`: Convenient way to manage an array of distinct identities with the trade-off that a `Cactus` deployment must be trusted with the private keys of the identities involved (an educated decision on the user's part). |
 | Success Scenario            | `User A` is able to interact with their wallets without having to access each private key individually. |
-| Success Criteria            | `User A`'s credentials are safely stored in the `BIF` keychain component where it is the least likely that they will be compromised (note that it is never impossible, but least unlikely, definitely) |
-| Failure Criteria            | `User A` is unable to import identities to `BIF` for a number of different reasons such as key format incompatibilities. |
+| Success Criteria            | `User A`'s credentials are safely stored in the `Cactus` keychain component where it is the least likely that they will be compromised (note that it is never impossible, but least unlikely, definitely) |
+| Failure Criteria            | `User A` is unable to import identities to `Cactus` for a number of different reasons such as key format incompatibilities. |
 | Prerequisites               | 1. `User A` has to have the identities on the various ledgers set up prior to importing them and must have access to the private |
 | Comments                    |  |
 
@@ -293,7 +277,7 @@ Interconnect as many ecosystems as possible regardless of technology limitations
 
 ### 3.1.2. Plugin Architecture from all possible aspects
 
-Identities, DLTs, service discovery. Minimize how opinionated we are to really embrace interoperability rather than silos and lock-in. Closely monitor community feedback/PRs to determine points of contention where core BIF code could be lifted into plugins.  Limit friction to adding future use cases and protocols.
+Identities, DLTs, service discovery. Minimize how opinionated we are to really embrace interoperability rather than silos and lock-in. Closely monitor community feedback/PRs to determine points of contention where core Hyperledger Cactus code could be lifted into plugins.  Limit friction to adding future use cases and protocols.
 
 ### 3.1.3. Prevent Double spending Where Possible
 
@@ -302,7 +286,7 @@ Two representations of the same asset do not exist across the ecosystems at the 
 ### 3.1.4 DLT Feature Inclusivity
 
 Each DLT has certain unique features that are partially or completely missing from other DLTs.
-BIF - where possible - should be designed in a way so that these unique features are accessible even when interacting with a DLT through BIF. A good example of this principle in practice would be Kubernetes CRDs and operators that allow the community to extend the Kubernetes core APIs in a reusable way.
+Hyperledger Cactus - where possible - should be designed in a way so that these unique features are accessible even when interacting with a DLT through Hyperledger Cactus. A good example of this principle in practice would be Kubernetes CRDs and operators that allow the community to extend the Kubernetes core APIs in a reusable way.
 
 ### 3.1.5 Low impact
 
@@ -341,8 +325,8 @@ Our communal modularity should extend to common mechanisms to operate and/or obs
 
 ### 3.1.12 Integration with Identity Frameworks (Moonshot)
 
-Do not expend opinions on identity frameworks just allow users of `BIF` to leverage the most common ones and allow for future expansion of the list of supported identity frameworks through the plugin architecture.
-Allow consumers of `BIF` to perform authentication, authorization and reading/writing of credentials.
+Do not expend opinions on identity frameworks just allow users of `Cactus` to leverage the most common ones and allow for future expansion of the list of supported identity frameworks through the plugin architecture.
+Allow consumers of `Cactus` to perform authentication, authorization and reading/writing of credentials.
 
 Identity Frameworks to support/consider initially:
 
@@ -367,13 +351,13 @@ Using a blockchain agnostic bidirectional communication channel for controlling 
 
 ### 3.2.4 Consortium Management
 
-Consortiums can be formed by cooperating entities (person, organization, etc.) who wish to all contribute hardware/network resources to the operation of a `BIF` cluster (set of validator nodes, API servers, etc.).
+Consortiums can be formed by cooperating entities (person, organization, etc.) who wish to all contribute hardware/network resources to the operation of a `Cactus` cluster (set of validator nodes, API servers, etc.).
 
 After the forming of the consortium with it's initial set of members (one or more) it is possible to enroll or remove certain new or existing members.
 
-`BIF` does not prescribe any specific consensus algorithm for the addition or removal of consortium members, but rather focuses on the technical side of making it possible to operate a cluster of nodes under the ownership of separate entities without downtime while also keeping it possible to add/remove members.
+`Cactus` does not prescribe any specific consensus algorithm for the addition or removal of consortium members, but rather focuses on the technical side of making it possible to operate a cluster of nodes under the ownership of separate entities without downtime while also keeping it possible to add/remove members.
 
-A newly joined consortium member does not have to participate in every component of `BIF`: Running a validator node is the only required action to participate, etcd, API server can remain the same as prior to the new member joining.
+A newly joined consortium member does not have to participate in every component of `Cactus`: Running a validator node is the only required action to participate, etcd, API server can remain the same as prior to the new member joining.
 
 ## 3.3 Working Policies
 
@@ -389,7 +373,7 @@ A newly joined consortium member does not have to participate in every component
 
 ### 4.1.1 Interworking patterns list
 
-The Blockchain Integration Framework has several interworking patterns as the following.
+Hyperledger Cactus has several interworking patterns as the following.
 
 - Note: In the following description, **Value (V)** means numerical assets (e.g. money). **Data (D)** means non-numerical assets (e.g. ownership proof). Ledger 1 is source ledger, Ledger 2 is destination ledger.
 
@@ -403,26 +387,26 @@ The Blockchain Integration Framework has several interworking patterns as the fo
 
 ### 4.2 Interworking architecture
 
-Blockchain Integration Framework will provide integrated service(s) by executing ledger operations across multiple blockchain ledgers. The execution of operations are controlled by the module of Blockchain Integration Framework which will be provided by vendors as the single Blockchain Integration Framework Business Logic plugin.
-The supported blockchain platforms by Blockchain Integration Framework can be added by implementing new Blockchain Integration Framework Ledger plugin.
-Once an API call to Blockchain Integration Framework framework is requested by a User, Business Logic plugin determines which ledger operations should be executed, and it ensures reliability on the issued integrated service is completed as expected.
-Following diagram shows the architecture of Blockchain Integration Framework based on the discussion made at BIF Lab project calls.
+Hyperledger Cactus will provide integrated service(s) by executing ledger operations across multiple blockchain ledgers. The execution of operations are controlled by the module of Hyperledger Cactus which will be provided by vendors as the single Hyperledger Cactus Business Logic plugin.
+The supported blockchain platforms by Hyperledger Cactus can be added by implementing new Hyperledger Cactus Ledger plugin.
+Once an API call to Hyperledger Cactus framework is requested by a User, Business Logic plugin determines which ledger operations should be executed, and it ensures reliability on the issued integrated service is completed as expected.
+Following diagram shows the architecture of Hyperledger Cactus based on the discussion made at Hyperledger Cactus project calls.
 The overall architecture is as the following figure.
 
 <img src="./architecture-with-plugin-and-routing.png" width="700">
 
 Each entity is as follows:
-- **Business Logic Plugin**: The entity executes business logic and provide integration services that are connected with multiple blockchains. The entity is composed by web application or smart contract on a blockchain. The entity is a single plugin and required for executing Blockchain Integration Framework applications.
+- **Business Logic Plugin**: The entity executes business logic and provide integration services that are connected with multiple blockchains. The entity is composed by web application or smart contract on a blockchain. The entity is a single plugin and required for executing Hyperledger Cactus applications.
 - **Ledger Plugin**: The entity communicates Business Logic Plugin with each ledger.  The entity is composed by a validator and a verifier as follows. The entity(s) is(are) chosen from multiple plugins on configuration.
 - **Validator**: The entity verifies transactions on the connected ledger and makes signatures for requesting to the verifier. The entity connects the verifier using a bi-directional channel.
 - **Verifier**: The entity verifies the signatures from the validator. The entity connects the validator using a bi-directional channel.
-- **BIF Routing Interface**: The entity is a routing service between Business Logic Plugin and  Ledger Plugin(s). The entity is also a routing service between Business Logic Plugin and API calls from application users.
-- **Ledger-n**: Ledger (e.g. Ethereum, Quorum, Hyperledger fabric, ...)
- 
+- **Cactus Routing Interface**: The entity is a routing service between Business Logic Plugin and  Ledger Plugin(s). The entity is also a routing service between Business Logic Plugin and API calls from application users.
+- **Ledger-n**: Ledger (e.g. Ethereum, Quorum, Hyperledger Fabric, ...)
+
 The execution steps are described as follows:
-- **Step 1**: Application user(s) makes an API call for operations on a single ledger or between multiple ledgers.  The API call is sent to Business Logic Plugin via Blockchain Integration Framework Routing Interface.
-- **Step 2**: Business Logic Plugin requests ledger operation(s) to Ledger Plugin(s) via Blockchain Integration Framework Routing Interface.  Ledger plugin requests the operation(s) to its connected ledger. The operation is settled on the ledger.
-- **Step 3**: The Ledger Plugin is monitoring transaction data on its connected ledger.  If Ledger Plugin receives transaction data related with the operation(s) of Step 2, Ledger Plugin verifies the transaction and send the verified transaction information to Business Logic Plugin via Blockchain Integration Framework Routing Interface, then Business Logic Plugin receives this information and records it.
+- **Step 1**: Application user(s) makes an API call for operations on a single ledger or between multiple ledgers.  The API call is sent to Business Logic Plugin via Hyperledger Cactus Routing Interface.
+- **Step 2**: Business Logic Plugin requests ledger operation(s) to Ledger Plugin(s) via Hyperledger Cactus Routing Interface.  Ledger plugin requests the operation(s) to its connected ledger. The operation is settled on the ledger.
+- **Step 3**: The Ledger Plugin is monitoring transaction data on its connected ledger.  If Ledger Plugin receives transaction data related with the operation(s) of Step 2, Ledger Plugin verifies the transaction and send the verified transaction information to Business Logic Plugin via Hyperledger Cactus Routing Interface, then Business Logic Plugin receives this information and records it.
 
 <div style="page-break-after: always; visibility: hidden"><!-- \pagebreak --></div>
 
@@ -430,19 +414,25 @@ The execution steps are described as follows:
 
 ### 4.3.1 Monorepo Packages
 
-The Blockchain Integration Framework is divided into a set of npm packages that can be compiled separately or all at once.
+Hyperledger Cactus is divided into a set of npm packages that can be compiled separately or all at once.
+
+All packages have a prefix of `cactus-*` to avoid potential naming conflicts with npm modules published by other Hyperledger projects. For example if both Cactus and Aries were to publish a package named `common` under the shared `@hyperledger` npm scope then the resulting fully qualified package name would end up being (without the prefix) as `@hyperledger/common` but with prefixes the conflict can be resolved as `@hyperledger/cactus-common` and `@hyperledger/aries-common`. Aries is just as an example here, we do not know if they plan on releasing packages under such names, but it also does not matter for the demonstration of ours.
 
 Naming conventions for packages:
 * cmd-* for packages that ship their own executable
-* sdk-* for packages designed to be used directly by application developers
+* sdk-* for packages designed to be used directly by application developers except for the Javacript SDK which is named just `sdk` for simplicity.
 * All other packages should be named preferably as a single English word suggesting the most important feature/responsibility of the package itself.
 
-#### 4.3.1.1 core
+#### 4.2.1.1 cmd-api-server
 
-Contains the kernel of the Blockchain Integration Framework.
+A command line application for running the API server that provides a unified REST based HTTP API for calling code.
+Contains the kernel of Hyperledger Cactus.
 Code that is strongly opinionated lives here, the rest is pushed to other packages that implement plugins or define their interfaces.
+Comes with Swagger API definitions, plugin loading built-in.
 
-**The main responsibilities of the `core` package are:**
+> By design this is stateless and horizontally scalable.
+
+**The main responsibilities of this package are:**
 
 ##### 4.3.1.1.1 Runtime Configuration Parsing and Validation
 
@@ -454,61 +444,142 @@ The core package is responsible for parsing runtime configuration from the usual
 
 The Apache 2.0 licensed node-convict library to be leveraged for the mechanical parts of the configuration parsing and validation: https://github.com/mozilla/node-convict
 
-##### 4.3.1.1.2 Configuration Schema - Validator
+##### 4.2.1.1.2 Configuration Schema - API Server
 
-|   | Parameter   | Type            | Config Key: CLI        | Config Key: Env      | Config Key: JSON    | Description                                                                                          |
-|---|-------------|-----------------|-----------------|---------------|--------------|------------------------------------------------------------------------------------------------------|
-|   | Etcd Hosts  | `Array<string>` | `--etcd-hosts`  | `ETCD_HOSTS`  | `etcdHosts`  | The hosts of Etcd nodes the validator node should connect to for the purpose of leadership election. |
-|   | Private Key | `string`        | `--private-key` | `PRIVATE_KEY` | `privateKey` | The private key of the validator node to be used when signing validated messages.                    |
-|   | Public Key  | `string`        | `--public-key`  | `PUBLIC_KEY`  | `publicKey`  | The public key of the validator node that pairs with the `Private Key` of the same node.             |
+To obtain the latest configuration options you can check out the latest source code of Cactus and then run this from the root folder of the project on a machine that has at least NodeJS 10 or newer installed:
 
-##### 4.3.1.1.3 Configuration Schema - API Server
+```sh
+$ date
+Mon May 11 18:27:08 PDT 2020
 
-|   | Parameter                 | Type            | Key: CLI, Env, JSON                                                                                | Description                                                                                                                                                                                                                                                                                                                                                                                                             |
-|---|---------------------------|-----------------|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   | Validator Hosts           | `Array<string>` | `--validator-hosts`<br><br>`VALIDATOR_HOSTS`<br><br>`validatorHosts`                               | <br>List of hosts to connect to when requesting validation related tasks from the validator nodes.                                                                                                                                                                                                                                                                                                                      |
-|   | HTTPS_PORT                | `number`        | `--https-port`<br><br>`HTTPS_PORT`<br><br>`httpsPort`                                              | The TCP port to listen on for HTTPS connections.                                                                                                                                                                                                                                                                                                                                                                        |
-|   | CORS Domains              | `Array<string>` | `--cors-domains`<br><br>`CORS_DOMAINS`<br><br>`corsDomains`                                        | Optional. Zero or more domain patterns (wildcards are allowed).                                                                                                                                                                                                                                                                                                                                                         |
-|   | Virtual Hosts             | `Array<string>` | `--virtual-hosts`<br><br>`VIRTUAL_HOSTS`<br><br>`virtualHosts`                                     | <br>Optional. When specified, constrains the acceptable incoming requests to ones that specify their host HTTP header in a way that matches at least one of the patterns specified in this configuration parameter.                                                                                                                                                                                                     |
-|   | Authentication Strategies | `Array<string>` | `--authentication-strategies`<br><br>`AUTHENTICATION_STRATEGIES`<br><br>`authenticationStrategies` | Optional. Specifies the fully qualified name, version and exported module of one or more npm packages that are to be loaded and used as the providers for the authentication strategies. For example to use PassportJS's OpenID Connect strategy one with specify the value `["passport-oidc-strategy@0.1.1###Strategy"]` which will get parsed as a JSON string containing an array of strings.                        |
-|   | Authentication Options    | `Array<string>` | `--authentication-options`<br><br>`AUTHENTICATION_OPTIONS`<br><br>`authenticationOptions`          | Used to provide arguments to the constructors (or factory functions) exported by the modules specified by `AUTHENTICATION_STRATEGIES`. For example, in this configuration parameter you can specify the callback URL for an Open ID Connect provider of your choice, the client ID, client secret, etc. Important: The order in which the items appear have to match the order of items in `AUTHENTICATION_STRATEGIES`. |
-|   | Package Registries        | `Array<string>` | `--package-registries`<br><br>`PACKAGE_REGISTRIES`<br><br>`packageRegistries`                      | Optional. Defaults to the public npm registry at `https://registry.npmjs.org/`. Can be used to specify private registries in the event of closed source plugins. If multiple registry URLs are provided, they all will be tried in-order at bootstrap time.                                                                                                                                                              |
+$ npx ts-node -e "import {ConfigService} from './packages/bif-cmd-api-server/src/main/typescript/config/config-service'; console.log(ConfigService.getHelpText());"
+
+Order of precedent for parameters in descdending order: CLI, Environment variables, Configuration file.
+Passing "help" as the first argument prints this message and also dumps the effective configuration.
+
+Configuration Parameters
+========================
+
+  configFile:
+                Description: The path to a config file that holds the configuration itself which will be parsed and validated.
+                Default: Mandatory parameter without a default value.
+                Env: CONFIG_FILE
+                CLI: --config-file
+  bifNodeId:
+                Description: Identifier of this particular BIF node. Must be unique among the total set of BIF nodes running in any given BIF deployment. Can be any string of characters such as a UUID or an Int64
+                Default: Mandatory parameter without a default value.
+                Env: BIF_NODE_ID
+                CLI: --bif-node-id
+  logLevel:
+                Description: The level at which loggers should be configured. Supported values include the following: error, warn, info, debug, trace
+                Default: warn
+                Env: LOG_LEVEL
+                CLI: --log-level
+  cockpitHost:
+                Description: The host to bind the Cockpit webserver to. Secure default is: 127.0.0.1. Use 0.0.0.0 to bind for any host.
+                Default: 127.0.0.1
+                Env: COCKPIT_HOST
+                CLI: --cockpit-host
+  cockpitPort:
+                Description: The HTTP port to bind the Cockpit webserver to.
+                Default: 3000
+                Env: COCKPIT_PORT
+                CLI: --cockpit-port
+  cockpitWwwRoot:
+                Description: The file-system path pointing to the static files of web application served as the cockpit by the API server.
+                Default: packages/bif-cmd-api-server/node_modules/@hyperledger-labs/bif-cockpit/www/
+                Env: COCKPIT_WWW_ROOT
+                CLI: --cockpit-www-root
+  apiHost:
+                Description: The host to bind the API to. Secure default is: 127.0.0.1. Use 0.0.0.0 to bind for any host.
+                Default: 127.0.0.1
+                Env: API_HOST
+                CLI: --api-host
+  apiPort:
+                Description: The HTTP port to bind the API server endpoints to.
+                Default: 4000
+                Env: API_PORT
+                CLI: --api-port
+  apiCorsDomainCsv:
+                Description: The Comma seperated list of domains to allow Cross Origin Resource Sharing from when serving API requests. The wildcard (*) character is supported to allow CORS for any and all domains, however using it is not recommended unless you are developing or demonstrating something with BIF.
+                Default: Mandatory parameter without a default value.
+                Env: API_CORS_DOMAIN_CSV
+                CLI: --api-cors-domain-csv
+  storagePluginPackage:
+                Description: The NodeJS package name that will be dynamically imported. You have to make sure that this is installed prior to starting the API server. Use "@hyperledger-labs/bif-plugin-kv-storage-memory" here for developmentor demo environments with only a single node you can use the built-in stub that stores everything in-memory, un-encrypted:
+                Default: Mandatory parameter without a default value.
+                Env: STORAGE_PLUGIN_PACKAGE
+                CLI: --storage-plugin-package
+  storagePluginOptionsJson:
+                Description: JSON string representing the options object that will be passed in to  the keychain plugin during initialization.
+                Default: {}
+                Env: KEYCHAIN_PLUGIN_OPTIONS_JSON
+                CLI: --keychain-plugin-options-json
+  keychainPluginPackage:
+                Description: The NodeJS package name that will be dynamically imported. You have to make sure that this is installed prior to starting the API server. Use "@hyperledger-labs/bif-plugin-keychain-memory" here for developmentor demo environments with only a single node you can use the built-in stub that stores everything in-memory, un-encrypted:
+                Default: Mandatory parameter without a default value.
+                Env: KEYCHAIN_PLUGIN_PACKAGE
+                CLI: --keychain-plugin-package
+  keychainPluginOptionsJson:
+                Description: JSON string representing the options object that will be passed in to  the storage plugin during initialization.
+                Default: {}
+                Env: STORAGE_PLUGIN_OPTIONS_JSON
+                CLI: --storage-plugin-options-json
+  publicKey:
+                Description: Public key of this BIF node (the API server)
+                Default: Mandatory parameter without a default value.
+                Env: PUBLIC_KEY
+                CLI: --public-key
+  privateKey:
+                Description: Private key of this BIF node (the API server)
+                Default: Mandatory parameter without a default value.
+                Env: PRIVATE_KEY
+                CLI: --private-key
+  keychainSuffixPrivateKey:
+                Description: The key under which to store/retrieve the private key from the keychain of this BIF node (API server)The complete lookup key is constructed from the ${BIF_NODE_ID}${KEYCHAIN_SUFFIX_PRIVATE_KEY} template.
+                Default: BIF_NODE_PRIVATE_KEY
+                Env: KEYCHAIN_SUFFIX_PRIVATE_KEY
+                CLI: --keychain-suffix-private-key
+  keychainSuffixPublicKey:
+                Description: The key under which to store/retrieve the public key from the keychain of this BIF node (API server)The complete lookup key is constructed from the ${BIF_NODE_ID}${KEYCHAIN_SUFFIX_PRIVATE_KEY} template.
+                Default: BIF_NODE_PUBLIC_KEY
+                Env: KEYCHAIN_SUFFIX_PUBLIC_KEY
+                CLI: --keychain-suffix-public-key
+
+```
 
 ##### 4.3.1.1.4 Plugin Loading/Validation
 
 Plugin loading happens through NodeJS's built-in module loader and the validation is performed by the Node Package Manager tool (npm) which verifies the byte level integrity of all installed modules.
 
-#### 4.3.1.2 cmd-api-server
+#### 4.2.1.2 core-api
 
-A command line application for running the API server that provides a unified REST based HTTP API for calling code.
+Contains interface definitions for the plugin architecture and other system level components that are to be shared among many other packages.
+`core-api` is intended to be a leaf package meaning that it shouldn't depend on other packages in order to make it safe for any and all packages to depend on `core-api` without having to deal with circular dependency issues.
 
-By design this is stateless and horizontally scalable.
-
-Comes with Swagger API definitions.
-
-#### 4.3.1.3 cmd-validator
-
-Command line application to run a single `BIF` validator node.
-
-#### 4.3.1.4 sdk-javascript
+#### 4.2.1.4 sdk
 
 Javascript SDK (bindings) for the RESTful HTTP API provided by `cmd-api-server`.
 Compatible with both NodeJS and Web Browser (HTML 5 DOM + ES6) environments.
 
-#### 4.3.1.5 keychain
+
+#### 4.2.1.5 keychain
 
 Responsible for persistently storing highly sensitive data (e.g. private keys) in an encrypted format.
 
 For further details on the API surface, see the relevant section under `Plugin Architecture`.
 
+
 #### 4.3.1.7 tracing
 
-Contains components for tracing, logging and application performance management (APM) of code written for the rest of the Blockchain Integration Framework packages.
+Contains components for tracing, logging and application performance management (APM) of code written for the rest of the Hyperledger Cactus packages.
+
 
 #### 4.3.1.8 audit
 
 Components useful for writing and reading audit records that must be archived longer term and immutable.
 The latter properties are what differentiates audit logs from tracing/logging messages which are designed to be ephemeral and to support technical issues not regulatory/compliance/governance related issues.
+
 
 #### 4.3.1.9 document-storage
 
@@ -518,19 +589,19 @@ By default, `Open Distro for ElasticSearch` is used as the storage backend: http
 
 <img width="700" src="https://www.plantuml.com/plantuml/png/0/ZLLHRzem47xthxZHXsrIWQ5gRmWL1jsgLHegQ4-L9cDVWaLYPxPJngR-zrsSX990QP5uyDtd-xwxyrskdUVMvsa2KoFo5BM7XJUMnmXJp1Ap2wQfuh7bAMDU-GJXsov3cw2CqS8aCM8ZrbnfkDKU2UQLqN13SDmQktdGRmhy7jn6wOpJ0UwKHayKOAnV6_RiSFWxHormRAtPBjTAR3Gw1rS746joBOMncgHzFh2d_4zAMA9twY_2rQSJOUTK2ILKnaaOHQ4KIGXxfxH8Seamz7d6fRtg2vEcHezEU2AZVPTlqPaK-v9xlk8EHun5HJMWyrgjEZ0SEXFvBRS8Sb-bqGWkxbIyzbzsNCC_nW0oBZP5AJlP9kwAL7PvfheExIFQ3d07P2Oh6KjRTV-hHIm20FqeYSpeeWUTFk7wZuE-adHKVjVdKdQ5nN3aoOCU3kzdYoMCvxSmqp8pgj0KU0Zv3CJAzr9yMJs4hYiVGbzfQeS_5xz470H-Eig-LbtdNP_FvtnReHPK7oMmq20IxbpDMxbTwJv9lC5Tw6LDN9_F4t-lK2yGrq5QnDx4wDVKo39UGuUtN52TQXdLyOIAXew9YfQ4HDjMi5AH3uvm9x2t27akbQ_fmk4DPEC2TsVY-2HZY984RqLR_XkyxVTJIwZjbVcLneSNLLN_v-2eyS5TLVznqBxz8qCzLSvRCrlCapnMkXt044861Bei848gJ_ibSBGE9vGZtNbv-2cgTAlc3W3GXZPF40Ib8eWCbNP6McYBBP1RiIuLoGZTlYXyLzNaPlnhEbwE9-F5x8DS3IuxdSjwOrrkryhZHxYuDpkUJ98SwnoqyGWhuxr9mKH7rIeckDeukKF7wi45QgqIZ6uqUeW508gOZ3Kd7NfvrXiTnM-TeIVDLXFkHD6FJNiq5PEnavjh3pdO8wor2munzRIorjX2xm0KtlPPH3MoZErdhv7_Njr1FvepyogSNPELllB_0G00">
 
-> The API surface provided by this package is kept intentionally simple and feature-poor so that different underlying storage backends remain an option long term through the plugin architecture of `BIF`.
+> The API surface provided by this package is kept intentionally simple and feature-poor so that different underlying storage backends remain an option long term through the plugin architecture of `Cactus`.
 
 #### 4.3.1.10 relational-storage
 
 Contains components responsible for providing access to standard SQL compliant persistent storage.
 
-> The API surface provided by this package is kept intentionally simple and feature-poor so that different underlying storage backends remain an option long term through the plugin architecture of `BIF`.
+> The API surface provided by this package is kept intentionally simple and feature-poor so that different underlying storage backends remain an option long term through the plugin architecture of `Cactus`.
 
 #### 4.3.1.11 immutable-storage
 
 Contains components responsible for providing access to immutable storage such as a distributed ledger with append-only semantics such as a blockchain network (e.g. Hyperledger Fabric).
 
-> The API surface provided by this package is kept intentionally simple and feature-poor so that different underlying storage backends remain an option long term through the plugin architecture of `BIF`.
+> The API surface provided by this package is kept intentionally simple and feature-poor so that different underlying storage backends remain an option long term through the plugin architecture of `Cactus`.
 
 ### 4.3.2 Deployment Diagram
 
@@ -570,11 +641,11 @@ Means for establishing bi-directional communication channels through proxies/fir
 
 ## 4.5 Plugin Architecture
 
-Since our goal is integration, it is critical that `BIF` has the flexibility of supporting most ledgers, even those that don't exist today.
+Since our goal is integration, it is critical that `Cactus` has the flexibility of supporting most ledgers, even those that don't exist today.
 
-> A plugin is a self contained piece of code that implements a predefined interface pertaining to a specific functionality of `BIF` such as transaction execution.
+> A plugin is a self contained piece of code that implements a predefined interface pertaining to a specific functionality of `Cactus` such as transaction execution.
 
-Plugins are an abstraction layer on top of the core components that allows operators of `BIF` to swap out implementations at will.
+Plugins are an abstraction layer on top of the core components that allows operators of `Cactus` to swap out implementations at will.
 
 > Backward compatibility is important, but versioning of the plugins still follows the semantic versioning convention meaning that major upgrades can have breaking changes.
 
@@ -582,7 +653,7 @@ Plugins are implemented as ES6 modules (source code) that can be loaded at runti
 
 An overarching theme for all aspects that are covered by the plugin architecture is that there should be a dummy implementation for each aspect to allow the simplest possible deployments to happen on a single, consumer grade machine rather than requiring costly hardware and specialized knowledge.
 
-> Ideally, a fully testable/operational (but not production ready) `BIF` deployment could be spun up on a developer laptop with a single command (an npm script for example).
+> Ideally, a fully testable/operational (but not production ready) `Cactus` deployment could be spun up on a developer laptop with a single command (an npm script for example).
 
 ---
 
@@ -593,8 +664,8 @@ An overarching theme for all aspects that are covered by the plugin architecture
 ### 4.5.1 Ledger Connector Plugins
 
 Success is defined as:
-1. Adding support in `BIF` for a ledger invented in the future requires no `core` code changes, but instead can be implemented by simply adding a corresponding connector plugin to deal with said newly invented ledger.
-2. Client applications using the REST API and leveraging the feature checks can remain 100% functional regardless of the number and nature of deployed connector plugins in `BIF`. For example: a generic money sending application does not have to hardcode the supported ledgers it supports because the unified REST API interface (fed by the ledger connector plugins) guarantees that supported features will be operational.
+1. Adding support in `Cactus` for a ledger invented in the future requires no `core` code changes, but instead can be implemented by simply adding a corresponding connector plugin to deal with said newly invented ledger.
+2. Client applications using the REST API and leveraging the feature checks can remain 100% functional regardless of the number and nature of deployed connector plugins in `Cactus`. For example: a generic money sending application does not have to hardcode the supported ledgers it supports because the unified REST API interface (fed by the ledger connector plugins) guarantees that supported features will be operational.
 
 Because the features of different ledgers can be very diverse, the plugin interface has feature checks built into allowing callers/client applications to **determine programmatically, at runtime** if a certain feature is supported or not on a given ledger.
 
@@ -651,7 +722,7 @@ PassportJS already has plugins written for client certificate validation, but we
 
 ### 4.5.3 Key/Value Storage Plugins
 
-Key/Value Storage plugins allow the higher-level packages to store and retrieve configuration metadata for a `BIF` cluster such as:
+Key/Value Storage plugins allow the higher-level packages to store and retrieve configuration metadata for a `Cactus` cluster such as:
 * Who are the active validators and what are the hosts where said validators are accessible over a network?
 * What public keys belong to which validator nodes?
 * What transactions have been scheduled, started, completed?
@@ -668,12 +739,12 @@ interface KeyValueStoragePlugin {
 
 The API surface of keychain plugins is roughly the equivalent of the key/value *Storage* plugins, but under the hood these are of course guaranteed to encrypt the stored data at rest by way of leveraging storage backends purpose built for storing and managing secrets.
 
-Possible storage backends include self hosted software [1] and cloud native services [2][3][4] as well. The goal of the keychain plugins (and the plugin architecture at large) is to make `BIF` deployable in different environments with different backing services such as an on-premise data center or a cloud provider who sells their own secret management services/APIs.
+Possible storage backends include self hosted software [1] and cloud native services [2][3][4] as well. The goal of the keychain plugins (and the plugin architecture at large) is to make `Cactus` deployable in different environments with different backing services such as an on-premise data center or a cloud provider who sells their own secret management services/APIs.
 There should be a dummy implementation as well that stores secrets in-memory and unencrypted (strictly for development purposes of course). The latter will decrease the barrier to entry for new users and would be contributors alike.
 
 Direct support for HSM (Hardware Security Modules) is also something the keychain plugins could enable, but this is lower priority since any serious storage backend with secret management in mind will have built-in support for dealing with HSMs transparently.
 
-By design, the keychain plugin can only be used by authenticated users with an active `BIF` session. Users secrets are isolated from each other on the keychain via namespacing that is internal to the keychain plugin implementations (e.g. users cannot query other users namespaces whatsoever).
+By design, the keychain plugin can only be used by authenticated users with an active `Cactus` session. Users secrets are isolated from each other on the keychain via namespacing that is internal to the keychain plugin implementations (e.g. users cannot query other users namespaces whatsoever).
 
 ```typescript
 interface KeychainPlugin extends KeyValueStoragePlugin {
@@ -689,20 +760,20 @@ interface KeychainPlugin extends KeyValueStoragePlugin {
 
 # 5. Identities, Authentication, Authorization
 
-`BIF` aims to provide a unified API surface for managing identities of an identity owner.
-Developers using the `BIF` REST API for their applications can support one or both of the below requirements:
+`Cactus` aims to provide a unified API surface for managing identities of an identity owner.
+Developers using the `Cactus` REST API for their applications can support one or both of the below requirements:
 1. Applications with a focus on access control and business process efficiency (usually in the enterprise)
 2. Applications with a focus on individual privacy (usually consumer-based applications)
 
-The following sections outline the high-level features of `BIF` that make the above vision reality.
+The following sections outline the high-level features of `Cactus` that make the above vision reality.
 
 An end user (through a user interface) can issue API requests to
-* register a username+password account (with optional MFA) **within** `BIF`.
-* associate their wallets to their `BIF` account and execute transactions involving those registered wallet (transaction signatures performed either locally or remotely as explained above).
+* register a username+password account (with optional MFA) **within** `Cactus`.
+* associate their wallets to their `Cactus` account and execute transactions involving those registered wallet (transaction signatures performed either locally or remotely as explained above).
 
 ## 5.1 Transaction Signing Modes, Key Ownership
 
-An application developer using `BIF` can choose to enable users to sign their transactions locally on their `user a`gent device without disclosing their private keys to `BIF` or remotely where `BIF` stores private keys server-side, encrypted at rest, made decryptable through authenticating with their `BIF` account.
+An application developer using `Cactus` can choose to enable users to sign their transactions locally on their user agent device without disclosing their private keys to `Cactus` or remotely where `Cactus` stores private keys server-side, encrypted at rest, made decryptable through authenticating with their `Cactus` account.
 Each mode comes with its own pros and cons that need to be carefully considered at design time.
 
 ### 5.1.1 Client-side Transaction Signing
@@ -710,8 +781,8 @@ Each mode comes with its own pros and cons that need to be carefully considered 
 Usually a better fit for consumer-based applications where end users have higher expectation of individual privacy.
 
 **Pros**
-* Keys are not compromised when a `BIF` deployment is compromised
-* Operator of `BIF` deployment is not liable for breach of keys (same as above)
+* Keys are not compromised when a `Cactus` deployment is compromised
+* Operator of `Cactus` deployment is not liable for breach of keys (same as above)
 * Reduced server-side complexity (no need to manage keys centrally)
 
 **Cons**
@@ -743,7 +814,7 @@ Usually a better fit for enterprise applications where end users have most likel
 
 ## 5.2 Open ID Connect Provider, Identity Provider
 
-`BIF` can authenticate users against *third party Identity Providers* or serve as an *Identity Provider* itself.
+`Cactus` can authenticate users against *third party Identity Providers* or serve as an *Identity Provider* itself.
 Everything follows the well-established industry standards of Open ID Connect to maximize information security and reduce the probability of data breaches.
 
 ## 5.3 Server-side Keychain for Web Applications
@@ -752,10 +823,10 @@ There is a gap between traditional web/mobile applications and blockchain applic
 Traditional (Web 2.0) applications (that adhering security best practices) use server-side sessions (web) or secure keychains provided by the operating system (iOS, Android, etc.)
 The current industry standard and state of the art authentication protocol in the enterprise application development industry is Open ID Connect (OIDC).
 
-To successfully close the gap between the two worlds, `BIF` comes equipped with an OIDC identity provider and a server-side key chain that can be leveraged by end `user a`pplications to authenticate once against BIF and manage identities on other blockchains through that single BIF identity.
+To successfully close the gap between the two worlds, `Cactus` comes equipped with an OIDC identity provider and a server-side key chain that can be leveraged by end user applications to authenticate once against Hyperledger Cactus and manage identities on other blockchains through that single Hyperledger Cactus identity.
 This feature is important for web applications which do not have secure offline storage APIs (HTML localStorage is not secure).
 
-Example: A user can register for a BIF account, import their private keys from their Fabric/Ethereum wallets and then have access to all of those identities by authenticating once only against `BIF` which will result in a server-side session (HTTP cookie) containing a JSON Web Token (JWT).
+Example: A user can register for a Hyperledger Cactus account, import their private keys from their Fabric/Ethereum wallets and then have access to all of those identities by authenticating once only against `Cactus` which will result in a server-side session (HTTP cookie) containing a JSON Web Token (JWT).
 
 > Native mobile applications may not need to use the server-side keychain since they usually come equipped with an OS provided one (Android, iOS does).
 
@@ -768,27 +839,27 @@ Web 3.0 applications (decentralized apps or *DApps*) which interact with blockch
 
 # 6. Terminology
 
-**Application user**: The user who requests an API call to a BIF application or smart contract. The API call triggers the sending of the transaction to the remote ledger.
+**Application user**: The user who requests an API call to a Hyperledger Cactus application or smart contract. The API call triggers the sending of the transaction to the remote ledger.
 
-**BIF Web application or Smart contract on a blockchain**: The entity executes business logic and provide integration services that include multiple blockchains.
+**Hyperledger Cactus Web application or Smart contract on a blockchain**: The entity executes business logic and provide integration services that include multiple blockchains.
 
-**Tx verifier**: The entity verifies the signature of the transaction data transmitted over the secure bidirectional channel. Validated transactions are processed by the BIF Web application or Smart Contract to execute the integrated business logic.
+**Tx verifier**: The entity verifies the signature of the transaction data transmitted over the secure bidirectional channel. Validated transactions are processed by the Hyperledger Cactus Web application or Smart Contract to execute the integrated business logic.
 
 **Tx submitter**: The entity submits the remote transaction to the API server plug-in on one of the ledgers.
 
-**API Server**: A module of BIF which provides a unified interface to control/monitor Blockchain ledger behind it.
+**API Server**: A module of Hyperledger Cactus which provides a unified interface to control/monitor Blockchain ledger behind it.
 
-**Validator**: A module of BIF which verifies validity of transaction to be sent out to the blockchain application.
+**Validator**: A module of Hyperledger Cactus which verifies validity of transaction to be sent out to the blockchain application.
 
 **Lock asset**: An operation to the asset managed on blockchain ledger, which disable further operation to targeted asset. The target can be whole or partial depends on type of asset.
 
-**Abort**: A state of BIF which is determined integrated ledger operation is failed, and BIF will execute recovery operations.
+**Abort**: A state of Hyperledger Cactus which is determined integrated ledger operation is failed, and Hyperledger Cactus will execute recovery operations.
 
-**Integrated ledger operation**: A series of blockchain ledger operations which will be triggered by BIF. BIF is responsible to execute 'recovery operations' when 'Abort' is occurred.
+**Integrated ledger operation**: A series of blockchain ledger operations which will be triggered by Hyperledger Cactus. Hyperledger Cactus is responsible to execute 'recovery operations' when 'Abort' is occurred.
 
-**Restore operation(s)**: Single or multiple ledger operations which is executed by BIF to restore the state of integrated service before start of integrated operation.
+**Restore operation(s)**: Single or multiple ledger operations which is executed by Hyperledger Cactus to restore the state of integrated service before start of integrated operation.
 
-**End User**: A person (private citizen or a corporate employee) who interacts with BIF and other ledger-related systems to achieve a specific goal or complete a task such as to send/receive/exchange money or data.
+**End User**: A person (private citizen or a corporate employee) who interacts with Hyperledger Cactus and other ledger-related systems to achieve a specific goal or complete a task such as to send/receive/exchange money or data.
 
 **Business Organization**: A for-profit or non-profit entity formed by one or more people to achieve financial gain or achieve a specific (non-financial) goal. For brevity, *business organization* may be shortened to *organization* throughout the document.
 
@@ -811,4 +882,3 @@ Web 3.0 applications (decentralized apps or *DApps*) which interact with blockch
 # 7. References
 
 1: [Heterogeneous System Architecture](https://en.wikipedia.org/wiki/Heterogeneous_System_Architecture) - Wikipedia, Retrieved at: 11th of December 2019
-
