@@ -224,8 +224,9 @@ export class ConfigService {
       }, {});
   }
 
-  public newExampleConfigConvict(): Config<IBifApiServerOptions> {
-    const env = this.newExampleConfigEnv();
+  public newExampleConfigConvict(bifApiServerOptions?: IBifApiServerOptions): Config<IBifApiServerOptions> {
+    bifApiServerOptions = bifApiServerOptions || this.newExampleConfig();
+    const env = this.newExampleConfigEnv(bifApiServerOptions);
     return this.getOrCreate({ env });
   }
 

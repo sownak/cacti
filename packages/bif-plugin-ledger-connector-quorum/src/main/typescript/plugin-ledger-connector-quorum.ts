@@ -1,4 +1,4 @@
-import { IPluginLedgerConnector, IWebServiceEndpoint, IPluginWebService } from '@hyperledger-labs/bif-core-api';
+import { IPluginLedgerConnector, IWebServiceEndpoint, IPluginWebService, PluginAspect } from '@hyperledger-labs/bif-core-api';
 import { Logger, LoggerProvider } from '@hyperledger-labs/bif-common';
 
 import Web3 from 'web3';
@@ -48,6 +48,14 @@ export class PluginLedgerConnectorQuorum implements IPluginLedgerConnector<any, 
       endpoints.push(endpoint);
     }
     return endpoints;
+  }
+
+  public getId(): string {
+    return `@hyperledger/cactus-plugin-ledger-connector-quorum`;
+  }
+
+  public getAspect(): PluginAspect {
+    return PluginAspect.LEDGER_CONNECTOR
   }
 
   public async sendTransaction(options: ITransactionOptions): Promise<any> {

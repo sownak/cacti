@@ -1,6 +1,7 @@
 import { IWebServiceEndpoint } from "./i-web-service-endpoint";
+import { ICactusPlugin } from "../i-cactus-plugin";
 
-export interface IPluginWebService {
+export interface IPluginWebService extends ICactusPlugin {
   installWebService(expressApp: any): IWebServiceEndpoint[];
 }
 
