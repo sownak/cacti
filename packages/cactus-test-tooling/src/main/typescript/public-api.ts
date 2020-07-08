@@ -20,3 +20,9 @@ export {
   HTTP_ECHO_CONTAINER_CTOR_DEFAULTS,
   HTTP_ECHO_CONTAINER_OPTS_SCHEMA,
 } from "./http-echo/http-echo-container";
+export {
+  FabricV1TestLedger,
+  IFabricTestLedgerConstructorOptions,
+  FABRIC_TEST_LEDGER_DEFAULT_OPTIONS,
+  FABRIC_TEST_LEDGER_OPTIONS_JOI_SCHEMA,
+} from "./fabric/fabric-test-ledger-v1";
