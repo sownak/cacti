@@ -1,0 +1,26 @@
+{
+    "network-config": {
+        "orderer": {
+            "url": "grpc://localhost:7050",
+            "server-hostname": "orderer.cactus.com",
+            "tls_cacerts": "../../crypto-config/ordererOrganizations/cactus.com/orderers/orderer.cactus.com/tls/ca.crt"
+        },
+        "org1": {
+            "name": "peerOrg1",
+            "mspid": "Org1MSP",
+            "ca": "http://localhost:7054",
+            "peers": {
+                "peer1": {
+                    "requests": "grpc://localhost:7051",
+                    "events": "grpc://localhost:7053",
+                    "server-hostname": "peer0.org1.cactus.com",
+                    "tls_cacerts": "../../crypto-config/peerOrganizations/org1.cactus.com/peers/peer0.org1.cactus.com/tls/ca.crt"
+                }
+            },
+            "admin": {
+                "key": "../../crypto-config/peerOrganizations/org1.cactus.com/users/Admin@org1.cactus.com/msp/keystore",
+                "cert": "../../crypto-config/peerOrganizations/org1.cactus.com/users/Admin@org1.cactus.com/msp/signcerts"
+            }
+        }
+    }
+}

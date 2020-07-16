@@ -10,7 +10,7 @@ import { ITestLedger } from "../i-test-ledger";
 export interface IFabricTestLedgerConstructorOptions {
   containerImageVersion?: string;
   containerImageName?: string;
-  opsApiHttpPort?: number;
+  restApiHttpPort?: number;
 }
 
 /*
@@ -19,7 +19,7 @@ export interface IFabricTestLedgerConstructorOptions {
 export const FABRIC_TEST_LEDGER_DEFAULT_OPTIONS = Object.freeze({
   containerImageVersion: "1.4.4",
   containerImageName: "sownak/cactus-fabric-all-in-one",
-  opsApiHttpPort: 9443,
+  restApiHttpPort: 4000,
 });
 
 /*
@@ -29,7 +29,7 @@ export const FABRIC_TEST_LEDGER_OPTIONS_JOI_SCHEMA: Joi.Schema = Joi.object().ke
   {
     containerImageVersion: Joi.string().min(5).required(),
     containerImageName: Joi.string().min(1).required(),
-    opsApiHttpPort: Joi.number()
+    restApiHttpPort: Joi.number()
       .integer()
       .min(1024)
       .max(65535)
@@ -40,7 +40,7 @@ export const FABRIC_TEST_LEDGER_OPTIONS_JOI_SCHEMA: Joi.Schema = Joi.object().ke
 export class FabricV1TestLedger implements ITestLedger {
   public readonly containerImageVersion: string;
   public readonly containerImageName: string;
-  public readonly opsApiHttpPort: number;
+  public readonly restApiHttpPort: number;
 
   private container: Container | undefined;
 
@@ -56,8 +56,8 @@ export class FabricV1TestLedger implements ITestLedger {
     this.containerImageName =
       options.containerImageName ||
       FABRIC_TEST_LEDGER_DEFAULT_OPTIONS.containerImageName;
-    this.opsApiHttpPort =
-      options.opsApiHttpPort || FABRIC_TEST_LEDGER_DEFAULT_OPTIONS.opsApiHttpPort;
+    this.restApiHttpPort =
+      options.restApiHttpPort || FABRIC_TEST_LEDGER_DEFAULT_OPTIONS.restApiHttpPort;
 
     this.validateConstructorOptions();
   }
@@ -77,10 +77,10 @@ export class FabricV1TestLedger implements ITestLedger {
     return `${this.containerImageName}:${this.containerImageVersion}`;
   }
 
-  public async getOpsApiHttpHost(): Promise<string> {
+  public async getRestApiHttpHost(): Promise<string> {
     const ipAddress: string = "127.0.0.1";
-    const hostPort: number = await this.getOpsApiPublicPort();
-    return `http://${ipAddress}:${hostPort}/version`;
+    const hostPort: number = await this.getRestApiPublicPort();
+    return `http://${ipAddress}:${hostPort}/healthz`;
   }
 
   public async start(): Promise<Container> {
@@ -101,7 +101,7 @@ export class FabricV1TestLedger implements ITestLedger {
         [],
         {
           ExposedPorts: {
-            [`${this.opsApiHttpPort}/tcp`]: {}, // Fabric Peer GRPC - HTTP
+            [`${this.restApiHttpPort}/tcp`]: {}, // Fabric RestAPI - HTTP
             "7050/tcp": {}, // Orderer GRPC - HTTP
             "7051/tcp": {}, // Peer additional - HTTP
             "7052/tcp": {}, // Peer Chaincode - HTTP
@@ -136,7 +136,7 @@ export class FabricV1TestLedger implements ITestLedger {
 
   public async waitForHealthCheck(timeoutMs: number = 120000): Promise<void> {
     const fnTag = "FabricV1TestLedger#waitForHealthCheck()";
-    const httpUrl = await this.getOpsApiHttpHost();
+    const httpUrl = await this.getRestApiHttpHost();
     const startedAt = Date.now();
     let reachable: boolean = false;
     do {
@@ -201,10 +201,10 @@ export class FabricV1TestLedger implements ITestLedger {
     }
   }
 
-  public async getOpsApiPublicPort(): Promise<number> {
-    const fnTag = "FabricV1TestLedger#getOpsApiPublicPort()";
+  public async getRestApiPublicPort(): Promise<number> {
+    const fnTag = "FabricV1TestLedger#getRestApiPublicPort()";
     const aContainerInfo = await this.getContainerInfo();
-    const { opsApiHttpPort: thePort } = this;
+    const { restApiHttpPort: thePort } = this;
     const { Ports: ports } = aContainerInfo;
 
     if (ports.length < 1) {
@@ -273,7 +273,7 @@ export class FabricV1TestLedger implements ITestLedger {
       {
         containerImageVersion: this.containerImageVersion,
         containerImageName: this.containerImageName,
-        opsApiHttpPort: this.opsApiHttpPort,
+        restApiHttpPort: this.restApiHttpPort,
       },
       FABRIC_TEST_LEDGER_OPTIONS_JOI_SCHEMA
     );

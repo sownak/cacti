@@ -16,13 +16,16 @@ ARG FABRIC_VERSION=1.4.4
 FROM hyperledger/fabric-ca:$FABRIC_VERSION as ca
 FROM hyperledger/fabric-orderer:$FABRIC_VERSION as orderer
 FROM hyperledger/fabric-peer:$FABRIC_VERSION as peer
+FROM hyperledger/fabric-ccenv:$FABRIC_VERSION
+
+ENV FABRIC_CFG_PATH=/etc/hyperledger/fabric
+ENV PROJECT_VERSION=1.4.4
 
 COPY --from=ca /usr/local/bin/fabric-ca-server /usr/local/bin/
 COPY --from=ca /usr/local/bin/fabric-ca-client /usr/local/bin/
 COPY --from=orderer /usr/local/bin/orderer /usr/local/bin/
-
-ENV FABRIC_CFG_PATH=/etc/hyperledger/fabric
-ENV PROJECT_VERSION=1.4.4
+COPY --from=orderer $FABRIC_CFG_PATH/* $FABRIC_CFG_PATH/
+COPY --from=peer $FABRIC_CFG_PATH/* $FABRIC_CFG_PATH/
 
 RUN wget https://github.com/hyperledger/fabric/releases/download/v${PROJECT_VERSION}/hyperledger-fabric-linux-amd64-${PROJECT_VERSION}.tar.gz \
     && tar -xvf hyperledger-fabric-linux-amd64-${PROJECT_VERSION}.tar.gz \
@@ -41,7 +44,9 @@ COPY ./start_ca.sh /etc/hyperledger/fabric-ca-server
 COPY ./start_orderer.sh /etc/hyperledger/fabric/orderer
 COPY ./start_peer.sh /etc/hyperledger/fabric/peer
 COPY ./join_channel.sh /etc/hyperledger/fabric/peer
+COPY typescript /etc/hyperledger/fabric/typescript
 
+RUN cd /etc/hyperledger/fabric/typescript && npm install
 RUN ./$FABRIC_CFG_PATH/generate.sh
 
 # SUPERVISORD
@@ -57,6 +62,8 @@ EXPOSE 7051 7052 7053
 EXPOSE 7054
 # fabric-peer operations
 EXPOSE 9443
+# fabric rest-api port
+EXPOSE 4000
 
 # SUPERVISORD PORTS
 EXPOSE 9001

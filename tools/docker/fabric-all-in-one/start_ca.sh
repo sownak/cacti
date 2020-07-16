@@ -7,5 +7,6 @@ export FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
 export FABRIC_CA_SERVER_CA_NAME=ca.cactus.com
 export FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.cactus.com-cert.pem
 export FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.cactus.com-key.pem
+export FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:7443
 
 fabric-ca-server start -b admin:adminpw

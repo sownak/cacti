@@ -32,9 +32,9 @@ tap.test("starts/stops/destroys a docker container", async (assert: any) => {
   assert.ok(ipAddress);
   assert.ok(ipAddress.length);
 
-  const hostPort: number = await fabricTestLedger.getOpsApiPublicPort();
-  assert.ok(hostPort, "getOpsApiPublicPort() returns truthy OK");
-  assert.ok(isFinite(hostPort), "getOpsApiPublicPort() returns finite OK");
+  const hostPort: number = await fabricTestLedger.getRestApiPublicPort();
+  assert.ok(hostPort, "getRestApiPublicPort() returns truthy OK");
+  assert.ok(isFinite(hostPort), "getRestApiPublicPort() returns finite OK");
 
   const isReachable = await isPortReachable(hostPort, { host: "localhost" });
   assert.ok(isReachable, `HostPort ${hostPort} is reachable via localhost`);
