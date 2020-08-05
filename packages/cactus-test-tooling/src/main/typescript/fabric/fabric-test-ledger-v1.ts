@@ -10,16 +10,16 @@ import { ITestLedger } from "../i-test-ledger";
 export interface IFabricTestLedgerConstructorOptions {
   containerImageVersion?: string;
   containerImageName?: string;
-  restApiHttpPort?: number;
+  opsApiHttpPort?: number;
 }
 
 /*
  * Provides default options for Fabric container
  */
 export const FABRIC_TEST_LEDGER_DEFAULT_OPTIONS = Object.freeze({
-  containerImageVersion: "1.4.4",
+  containerImageVersion: "1.4.8",
   containerImageName: "sownak/cactus-fabric-all-in-one",
-  restApiHttpPort: 4000,
+  opsApiHttpPort: 9443,
 });
 
 /*
@@ -29,7 +29,7 @@ export const FABRIC_TEST_LEDGER_OPTIONS_JOI_SCHEMA: Joi.Schema = Joi.object().ke
   {
     containerImageVersion: Joi.string().min(5).required(),
     containerImageName: Joi.string().min(1).required(),
-    restApiHttpPort: Joi.number()
+    opsApiHttpPort: Joi.number()
       .integer()
       .min(1024)
       .max(65535)
@@ -40,7 +40,7 @@ export const FABRIC_TEST_LEDGER_OPTIONS_JOI_SCHEMA: Joi.Schema = Joi.object().ke
 export class FabricV1TestLedger implements ITestLedger {
   public readonly containerImageVersion: string;
   public readonly containerImageName: string;
-  public readonly restApiHttpPort: number;
+  public readonly opsApiHttpPort: number;
 
   private container: Container | undefined;
 
@@ -56,8 +56,8 @@ export class FabricV1TestLedger implements ITestLedger {
     this.containerImageName =
       options.containerImageName ||
       FABRIC_TEST_LEDGER_DEFAULT_OPTIONS.containerImageName;
-    this.restApiHttpPort =
-      options.restApiHttpPort || FABRIC_TEST_LEDGER_DEFAULT_OPTIONS.restApiHttpPort;
+    this.opsApiHttpPort =
+      options.opsApiHttpPort || FABRIC_TEST_LEDGER_DEFAULT_OPTIONS.opsApiHttpPort;
 
     this.validateConstructorOptions();
   }
@@ -77,10 +77,10 @@ export class FabricV1TestLedger implements ITestLedger {
     return `${this.containerImageName}:${this.containerImageVersion}`;
   }
 
-  public async getRestApiHttpHost(): Promise<string> {
+  public async getOpsApiHttpHost(): Promise<string> {
     const ipAddress: string = "127.0.0.1";
-    const hostPort: number = await this.getRestApiPublicPort();
-    return `http://${ipAddress}:${hostPort}/healthz`;
+    const hostPort: number = await this.getOpsApiPublicPort();
+    return `http://${ipAddress}:${hostPort}/version`;
   }
 
   public async start(): Promise<Container> {
@@ -101,7 +101,7 @@ export class FabricV1TestLedger implements ITestLedger {
         [],
         {
           ExposedPorts: {
-            [`${this.restApiHttpPort}/tcp`]: {}, // Fabric RestAPI - HTTP
+            [`${this.opsApiHttpPort}/tcp`]: {}, // Fabric Peer GRPC - HTTP
             "7050/tcp": {}, // Orderer GRPC - HTTP
             "7051/tcp": {}, // Peer additional - HTTP
             "7052/tcp": {}, // Peer Chaincode - HTTP
@@ -136,7 +136,7 @@ export class FabricV1TestLedger implements ITestLedger {
 
   public async waitForHealthCheck(timeoutMs: number = 120000): Promise<void> {
     const fnTag = "FabricV1TestLedger#waitForHealthCheck()";
-    const httpUrl = await this.getRestApiHttpHost();
+    const httpUrl = await this.getOpsApiHttpHost();
     const startedAt = Date.now();
     let reachable: boolean = false;
     do {
@@ -201,10 +201,10 @@ export class FabricV1TestLedger implements ITestLedger {
     }
   }
 
-  public async getRestApiPublicPort(): Promise<number> {
-    const fnTag = "FabricV1TestLedger#getRestApiPublicPort()";
+  public async getOpsApiPublicPort(): Promise<number> {
+    const fnTag = "FabricV1TestLedger#getOpsApiPublicPort()";
     const aContainerInfo = await this.getContainerInfo();
-    const { restApiHttpPort: thePort } = this;
+    const { opsApiHttpPort: thePort } = this;
     const { Ports: ports } = aContainerInfo;
 
     if (ports.length < 1) {
@@ -273,7 +273,7 @@ export class FabricV1TestLedger implements ITestLedger {
       {
         containerImageVersion: this.containerImageVersion,
         containerImageName: this.containerImageName,
-        restApiHttpPort: this.restApiHttpPort,
+        opsApiHttpPort: this.opsApiHttpPort,
       },
       FABRIC_TEST_LEDGER_OPTIONS_JOI_SCHEMA
     );

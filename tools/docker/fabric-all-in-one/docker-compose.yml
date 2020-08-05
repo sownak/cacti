@@ -3,7 +3,7 @@ version: '3.6'
 
 services:
   fabric-aio:
-    image: "hyperledger/cactus-fabric-all-in-one:latest"
+    image: "hyperledger/cactus-fabric-all-in-one:1.4.8"
     ports:
       - 7050:7050/tcp # Fabric orderer - HTTP
       - 7051:7051/tcp # Fabric peer - HTTP

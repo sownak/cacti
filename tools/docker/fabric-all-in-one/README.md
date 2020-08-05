@@ -14,7 +14,7 @@ Example `.vscode/tasks.json` file for building/running the image:
     {
       "label": "Docker - BUILD and TAG: Latest",
       "type": "shell",
-      "command": "docker build . -t hyperledger/cactus-fabric-all-in-one:latest"
+      "command": "docker build . -t hyperledger/cactus-fabric-all-in-one:1.4.8"
     },
     {
       "label": "Docker Compose - BUILD",
